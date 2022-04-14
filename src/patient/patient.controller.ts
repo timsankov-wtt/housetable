@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { PatientService } from './patient.service';
@@ -24,4 +24,13 @@ import { Patient } from './patient.entity';
 @Controller('patient')
 export class PatientController implements CrudController<Patient> {
   constructor(public service: PatientService) {}
+
+  @Get('/trends')
+  mostPopularPatientType() {
+    return this.service.findMostPopularType();
+  }
+  @Get('/sum')
+  countTypeAmount() {
+    return this.service.countTypeAmount();
+  }
 }
