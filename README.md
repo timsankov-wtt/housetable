@@ -1,73 +1,83 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+### Installation
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### Running the app
 
 ```bash
 # development
 $ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+### DB setup
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ docker-compose up -d
 ```
+# Endpoints 
+1. Adding a new patient (patient details should contain a pet name, pet type (cat, dog, bird), owner name, and owner address, owner phone number).
+> `POST /patient`
 
-## Support
+Example body:
+```json 
+{
+    "name": "Alex",
+    "address": "address 1",
+    "type": "bird",
+    "owner_name": "Bob",
+    "owner_address": "address 1",
+    "owner_phone_number": "+123123123412"
+}
+```
+2. Getting a list of all patients in the hospital 
+> `GET /patient`
+3. Update patient details 
+> `PUT /patient/:id`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Example body:
+```json 
+{
+    "name": "Bob",
+}
+```
+4. Delete patient details
+> `DELETE /patient/:id`
+5. Adding an appointment to an existing patient (appointment details should contain appointment start time, appointment end time, description, the fee paid by the USD or EUR or Bitcoin /unpaid and the amount).
+> `POST /patient/:patientId/appointment`
 
-## Stay in touch
+Example body:
+```json 
+{
+    "start": "2020-06-10T12:00:00.000Z",
+    "end": "2020-06-10T16:00:00.000Z",
+    "description": "desk...",
+    "paid": false,
+    "currency": "usd",
+    "amount": 30
+}
+```
+6. Get a list of all appointments for a specific patient. 
+> `GET /patient/:id`
+7. Update appointment details.
+> `PUT /patient/:patientId/appointment/:id`
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Example body:
+```json 
+{
+    "paid": true,
+}
+```
+8. Delete appointment details.
+> `DELETE /patient/:patientId/appointment/:id`
+9. Get a list of appointments for a specific day. 
+> `GET /appointment/statistic?filter=start||$lte||2020-07-10T00:00:00.000Z&filter=start||$gte||2020-07-10T24:59:59.999Z`
+10. Get a list of unpaid appointments.
+> `GET /appointment/statistic?filter=paid||$eq||false`
+11. Get a remaining bill for a specific patient.  
+> `GET /appointment/statistic?filter=paid||$eq||true`
+12. Get the weekly and monthly amount paid, unpaid and balance of hospital in dollars.
 
-## License
+13. Get the most popular pet type, and how much money the hospital makes from each pet type.
 
-Nest is [MIT licensed](LICENSE).
