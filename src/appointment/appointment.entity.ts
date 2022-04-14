@@ -12,14 +12,13 @@ import {
   IsNotEmpty,
   IsDateString,
   IsEnum,
-  ValidateIf,
-  IsNumberString,
-  IsBooleanString,
+  IsBoolean,
+  IsNumber,
+  Min,
 } from 'class-validator';
 import { CrudValidationGroups } from '@nestjsx/crud';
 import { ApiProperty } from '@nestjs/swagger';
 import { Patient } from 'src/patient/patient.entity';
-import { Transform } from 'class-transformer';
 
 const { CREATE, UPDATE } = CrudValidationGroups;
 
@@ -57,10 +56,7 @@ export class Appointment extends BaseEntity {
   @ApiProperty()
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
-  @IsBooleanString()
-  @Transform(({ value }) => JSON.parse(String(value).toLowerCase()), {
-    toPlainOnly: true,
-  })
+  @IsBoolean()
   @Column({ type: 'boolean', nullable: false })
   paid: boolean;
 
@@ -74,7 +70,8 @@ export class Appointment extends BaseEntity {
   @ApiProperty()
   @IsOptional({ groups: [UPDATE] })
   @IsNotEmpty({ groups: [CREATE] })
-  @IsNumberString()
+  @IsNumber()
+  @Min(0)
   @Column({ type: 'decimal', default: 0 })
   amount: number;
 
