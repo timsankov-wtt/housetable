@@ -72,6 +72,9 @@ Example body:
 8. Delete appointment details.
 > `DELETE /patient/:patientId/appointment/:id`
 9. Get a list of appointments for a specific day. 
+
+[filter options](https://github.com/nestjsx/crud/wiki/Requests#filter-conditions)
+
 > `GET /appointment/statistic?filter=start||$lte||2020-07-10T00:00:00.000Z&filter=start||$gte||2020-07-10T24:59:59.999Z`
 10. Get a list of unpaid appointments.
 > `GET /appointment/statistic?filter=paid||$eq||false`
@@ -79,5 +82,8 @@ Example body:
 > `GET /appointment/statistic?filter=paid||$eq||true`
 12. Get the weekly and monthly amount paid, unpaid and balance of hospital in dollars.
 
+Month paid amount sum
+> `GET /appointment/statistic/balance?filter=paid||$eq||false&filter=start||$gte||2020-06-01T00:00:00.000Z&filter=start||$lte||2020-06-31T23:59:59.999Z`
 13. Get the most popular pet type, and how much money the hospital makes from each pet type.
-
+> `GET /patient/trends`
+> `GET /patient/sum`
